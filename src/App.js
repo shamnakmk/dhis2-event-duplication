@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDataQuery } from "@dhis2/app-runtime";
 import { CircularLoader } from "@dhis2/ui";
-import Duplicate from "./Duplicate";
+import EventFetch from "./EventFetch";
 import { InputField } from "@dhis2/ui";
 import {
   Button,
@@ -16,88 +16,33 @@ import {
   Input,
 } from "@dhis2/ui";
 
-const PAGE_SIZE = 100;
-const query = {
-  result: {
-    resource: "tracker/events",
-    params: ({ trackedEntity, program }) => ({
-      order: "created:desc",
-      pageSize: PAGE_SIZE,
-      fields: "*",
-      trackedEntity,
-      program,
-    }),
-  },
-};
-
-export const Events = () => {
-  const [inputTrackedEntityId, setInputTrackedEntityId] = useState("");
-  const [inputProgramId, setInputProgramId] = useState("");
-
-  const { loading, error, data, refetch } = useDataQuery(query);
-
-  const onFetchClick = async () => {
-    refetch({ trackedEntity: inputTrackedEntityId, program: inputProgramId });
+export const App = () => {
+  const [inputEvent, setInputEvent] = useState("");
+  const [programStage, setProgramStage] = useState("");
+  const [render, setRender] = useState(false);
+  const onClick = () => {
+    setRender(true);
   };
+
   return (
     <div>
       <InputField
-        label={"TrackedEntity Id"}
-        placeholder={"Uid of the TrackedEntity"}
-        value={inputTrackedEntityId}
-        onChange={({ value }) => setInputTrackedEntityId(value)}
-      />
-      <InputField
-        label={"program Id"}
-        placeholder={"Uid of the program"}
-        value={inputProgramId}
-        onChange={({ value }) => setInputProgramId(value)}
+        label={"Event Id"}
+        placeholder={"Uid of the Event"}
+        value={inputEvent}
+        onChange={({ value }) => {
+          setInputEvent(value);
+          setRender(false);
+        }}
       />
 
-      <Button primary small disabled={loading} onClick={onFetchClick}>
-        Fetch
+      <Button primary small onClick={onClick}>
+        Render
       </Button>
 
-      <h3>Events</h3>
-
-      {loading && <CircularLoader />}
-      {error && <span>{`ERROR: ${error.message}`}</span>}
-      {data && (
-        <pre>
-          <Table>
-            <TableHead>
-              <TableRowHead>
-                <TableCellHead>Tracked Entity</TableCellHead>
-                <TableCellHead>Program</TableCellHead>
-                <TableCellHead>Program Stage</TableCellHead>
-                <TableCellHead>Enrollment</TableCellHead>
-              </TableRowHead>
-            </TableHead>
-            <TableBody>
-              {data.result.instances.map((item) => {
-                return (
-                  <TableRow>
-                    <TableCell>{item.trackedEntity}</TableCell>
-                    <TableCell>{item.program}</TableCell>
-                    <TableCell>{item.programStage}</TableCell>
-                    <TableCell>{item.enrollment}</TableCell>
-                    <TableCell>
-                      <Duplicate event={item} />
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-            <TableFoot>
-              <TableRow>
-                <TableCell colSpan="8"></TableCell>
-              </TableRow>
-            </TableFoot>
-          </Table>
-        </pre>
-      )}
+      {render && <EventFetch eventId={inputEvent} />}
     </div>
   );
 };
 
-export default Events;
+export default App;

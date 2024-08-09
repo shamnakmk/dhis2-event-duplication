@@ -1,9 +1,10 @@
 const config = {
-    type: 'app',
+  type: "app",
+  name: "Event duplicator plugin",
+  entryPoints: {
+    app: "./src/App.js",
+    plugin: "./src/EventFetch.js",
+  },
+};
 
-    entryPoints: {
-        app: './src/App.js',
-    },
-}
-
-module.exports = config
+module.exports = config;

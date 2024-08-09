@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDataMutation } from "@dhis2/app-runtime";
+import { useDataMutation, useDataQuery } from "@dhis2/app-runtime";
 import { CircularLoader } from "@dhis2/ui";
 
 import { InputField } from "@dhis2/ui";
@@ -16,15 +16,23 @@ const myMutation = {
   },
 };
 
-export const Duplicate = (props) => {
+const Replicate = (props) => {
   const [inputNumber, setInputNumber] = useState("");
 
-  const [
-    mutate,
-    { error: mutateError, loading: mutateLoading, data: mutateData, called },
-  ] = useDataMutation(myMutation);
+  const [mutate, { error, loading, data, called }] =
+    useDataMutation(myMutation);
+  const d = new Date();
 
   const onDuplicateClick = async () => {
+    props.eventObject.event = null;
+    props.eventObject.occurredAt = d.toISOString();
+    props.eventObject.updatedAt = d.toISOString();
+    if (props.eventObject.status === "COMPLETED") {
+      props.eventObject.completedAt = d.toISOString();
+    }
+
+    console.log(props.eventObject);
+
     let numberOfDuplicates = parseInt(inputNumber);
     if (isNaN(numberOfDuplicates) || numberOfDuplicates <= 0) {
       alert("Please enter a valid number for duplication.");
@@ -34,9 +42,7 @@ export const Duplicate = (props) => {
     let eventArray = [];
 
     for (let i = 0; i < numberOfDuplicates; i++) {
-      props.event.event = null;
-
-      eventArray.push(props.event);
+      eventArray.push(props.eventObject);
     }
 
     await mutate({ eventArray: eventArray });
@@ -51,20 +57,15 @@ export const Duplicate = (props) => {
         onChange={({ value }) => setInputNumber(value)}
       />
 
-      <Button primary small disabled={mutateLoading} onClick={onDuplicateClick}>
+      <Button primary small disabled={loading} onClick={onDuplicateClick}>
         Duplicate
       </Button>
 
-      {mutateLoading && <CircularLoader />}
+      {loading && <CircularLoader />}
 
-      {mutateError && (
-        <span>{`ERROR: ${mutateError} and DATA ${mutateData}`}</span>
-      )}
-      {!mutateLoading && !mutateError && called && (
-        <span>{`Succesfully duplicated`}</span>
-      )}
+      {error && <span>{`ERROR: ${error} `}</span>}
+      {!loading && !error && called && <span>{`Succesfully duplicated`}</span>}
     </div>
   );
 };
-
-export default Duplicate;
+export default Replicate;
