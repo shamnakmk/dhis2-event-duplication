@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDataMutation, useDataQuery } from "@dhis2/app-runtime";
 import { CircularLoader } from "@dhis2/ui";
-import ProgramStageFetch from "./ProgramStageFetch";
+import Replicate from "./Replicate";
 
 import { InputField } from "@dhis2/ui";
 import { Button } from "@dhis2/ui";
@@ -33,12 +33,7 @@ export const EventFetch = (props) => {
     <div>
       {loading && <CircularLoader />}
       {error && <span>{`ERROR: ${error.message}`}</span>}
-      {data && (
-        <ProgramStageFetch
-          programStageId={data.result.instances[0].programStage}
-          eventObject={data.result.instances[0]}
-        />
-      )}
+      {data && <Replicate eventObject={data.result.instances[0]} />}
     </div>
   );
 };

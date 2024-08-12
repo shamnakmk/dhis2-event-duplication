@@ -3,7 +3,7 @@ const config = {
   name: "Event duplicator plugin",
   entryPoints: {
     app: "./src/App.js",
-    plugin: "./src/EventFetch.js",
+    plugin: "./src/ProgramStageFetch.js",
   },
 };
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { useDataMutation, useDataQuery } from "@dhis2/app-runtime";
 import { CircularLoader } from "@dhis2/ui";
-import Replicate from "./Replicate";
+import EventFetch from "./EventFetch";
 
 import { InputField } from "@dhis2/ui";
 import { Button } from "@dhis2/ui";
@@ -30,7 +30,7 @@ export const ProgramStageFetch = (props) => {
       {loading && <CircularLoader />}
       {error && <span>{`ERROR: ${error.message}`}</span>}
       {data && data.result.programStages[0].repeatable && (
-        <Replicate eventObject={props.eventObject} />
+        <EventFetch eventId={props.eventId} />
       )}
       {data && !data.result.programStages[0].repeatable && (
         <span>ProgramStage is not repeatable.</span>

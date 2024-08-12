@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDataQuery } from "@dhis2/app-runtime";
 import { CircularLoader } from "@dhis2/ui";
-import EventFetch from "./EventFetch";
+import ProgramStageFetch from "./ProgramStageFetch";
 import { InputField } from "@dhis2/ui";
 import {
   Button,
@@ -35,12 +35,20 @@ export const App = () => {
           setRender(false);
         }}
       />
+      <InputField
+        label={"Program Stage"}
+        placeholder={"Uid of the Program Stage"}
+        value={programStage}
+        onChange={({ value }) => setProgramStage(value)}
+      />
 
       <Button primary small onClick={onClick}>
         Render
       </Button>
 
-      {render && <EventFetch eventId={inputEvent} />}
+      {render && (
+        <ProgramStageFetch eventId={inputEvent} programStageId={programStage} />
+      )}
     </div>
   );
 };
