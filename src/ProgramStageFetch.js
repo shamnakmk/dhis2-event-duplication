@@ -18,9 +18,6 @@ const programStageQuery = (programStage) => {
   };
 };
 export const ProgramStageFetch = (props) => {
-  console.log(
-    "the program stage id received by component is" + props.programStageId
-  );
   const { loading, error, data } = useDataQuery(
     programStageQuery(props.programStageId)
   );
@@ -33,7 +30,9 @@ export const ProgramStageFetch = (props) => {
         <EventFetch eventId={props.eventId} />
       )}
       {data && !data.result.programStages[0].repeatable && (
-        <span>ProgramStage is not repeatable.</span>
+        <span>
+          {"This Program Stage is not repeatable and cannot be duplicated"}
+        </span>
       )}
     </div>
   );

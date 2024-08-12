@@ -47,7 +47,7 @@ export const App = () => {
       </Button>
 
       {render && (
-        <ProgramStageFetch eventId={inputEvent} programStageId={programStage} />
+        <ProgramStageFetch eventId={inputEvent} programStage={programStage} />
       )}
     </div>
   );

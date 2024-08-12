@@ -31,8 +31,6 @@ const Replicate = (props) => {
       props.eventObject.completedAt = d.toISOString();
     }
 
-    console.log(props.eventObject);
-
     let numberOfDuplicates = parseInt(inputNumber);
     if (isNaN(numberOfDuplicates) || numberOfDuplicates <= 0) {
       alert("Please enter a valid number for duplication.");
@@ -51,8 +49,8 @@ const Replicate = (props) => {
   return (
     <div>
       <InputField
-        label={"Number"}
-        placeholder={"Number of the duplication"}
+        label={"Enter the number of times this event has to duplicated"}
+        placeholder={"A number"}
         value={inputNumber}
         onChange={({ value }) => setInputNumber(value)}
       />
@@ -64,7 +62,9 @@ const Replicate = (props) => {
       {loading && <CircularLoader />}
 
       {error && <span>{`ERROR: ${error} `}</span>}
-      {!loading && !error && called && <span>{`Succesfully duplicated`}</span>}
+      {!loading && !error && called && (
+        <span>{"Succesfully duplicated event " + inputNumber + " times"}</span>
+      )}
     </div>
   );
 };

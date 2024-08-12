@@ -8,7 +8,6 @@ import { Button } from "@dhis2/ui";
 
 //eventId?: string;
 const createEventQuery = (eventId) => {
-  console.log("the event id received by createEventQuery is" + eventId);
   return {
     result: {
       resource: "tracker/events",
@@ -22,12 +21,9 @@ const createEventQuery = (eventId) => {
   };
 };
 export const EventFetch = (props) => {
-  console.log("the event id received by component is" + props.eventId);
   const { loading, error, data } = useDataQuery(
     createEventQuery(props.eventId)
   );
-
-  console.log("the props received is", props);
 
   return (
     <div>
