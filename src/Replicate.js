@@ -63,7 +63,11 @@ const Replicate = (props) => {
 
       {error && <span>{`ERROR: ${error} `}</span>}
       {!loading && !error && called && (
-        <span>{"Succesfully duplicated event " + inputNumber + " times"}</span>
+        <span>
+          {inputNumber == 1
+            ? "Successfully duplicated event " + inputNumber + " time"
+            : "Successfully duplicated event " + inputNumber + " times"}
+        </span>
       )}
     </div>
   );
